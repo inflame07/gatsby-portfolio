@@ -23,11 +23,11 @@ module.exports = {
         externalLinks: [
           {
             name: `Twitter`,
-            url: `https://twitter.com/lekoarts_de`,
+            url: `https://twitter.com/inflame_7`,
           },
           {
-            name: `Instagram`,
-            url: `https://www.instagram.com/lekoarts.de/`,
+            name: `LinkedIn`,
+            url: `https://www.linkedin.com/in/inflame`,
           },
         ],
       },
