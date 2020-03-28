@@ -1,0 +1,72 @@
+---
+title: How I created a simple URL Shortener using React and Node
+date: 2020-03-28
+description: How I created a simple URL shortener using MERN stack.
+tags:
+  - Url Shortener
+  - React.js
+  - Node.js
+banner: ./URL-Shortener-banner.jpeg
+---
+URL Shorteners are very useful if you want to remember a large URL of some website. They trim down the huge URLs into really small URLs which mostly has 6 alphanumeric characters. Some sites also provide the functionality of custom URL where you can use your text prefixed with the domain name of site. But those are more complex ones and we’ll only discuss the basic one here.
+
+![URL Shortener](./URL-Shortener-banner.jpeg)
+
+## How URL shorteners work?
+
+1.  You enter your long lengthy URL in the input field on the website and hit submit.
+2.  As soon as you hit submit, the backend logic fires a POST request which makes an entry in the database of the URL. Also, at the same time, it generates a random id consisting of 6 digits. This can be done easily. This id is mapped with the long URL and stored in the database. 
+3. After this step, the generated id when entered in the search bar prefixed with the domain name of the site redirects to the original long URL. 
+
+Following Code shows the backend logic which handles the requests coming from the frontend.
+
+```jsx:title=server.js {3,15,23,24,28}
+// This route finds all the shorturls that have been created till now and displays them in a tabular form
+app.get("/api", (req, res) => {
+	ShortURLs.find(function(err,urls){
+		if(err){
+			console.log(err);
+		}
+		else{
+			console.log(urls);
+			res.json(urls);
+		}
+	});
+});
+// POST request makes an entry in the database and generates a 6 digit id
+app.post("/api/shortURLs", function(req, res) {
+	ShortURLs.create({ full: req.body.fullURL })
+		.then(() => console.log("Short URL created!"))
+		.catch(err => console.log(err));
+	res.redirect("/");
+});
+
+// This route finds a specific url associated with a particular id (:shortUrl)
+// and the redirects to the long url associated with it
+app.get("/api/:shortUrl", async (req, res) => {
+	const shortUrl = await ShortURLs.findOne({ short: req.params.shortUrl });
+	if (shortUrl == null) return res.sendStatus(404);
+	shortUrl.clicks++;
+	shortUrl.save();
+	res.redirect(shortUrl.full);
+});
+
+```
+Say for example, 
+ - A user goes to *`https://shrinkerr.herokuapp.com/`*, enters the URL that he wants to shrink i.e `www.reallylongurl.com/somedata/somedata`.
+ - As soon as he submits the URL, a shortID is generated and mapped with the URL. Le the id be abc123.
+ - Now if he searches `https://shrinkerr.herokuapp.com/abc123`, he is redirected to `www.reallylongurl.com/somedata/somedata`.
+
+
+## Use of MERN stack
+-   Node.js along with its Express framework helps in creating routes quickly without worrying. Also, Node.js provides a lot of packages which help to create the application fast by focusing on the meat of the application and leave the unimportant things.
+-   MongoDB as the database is super easy to use and deploy. Also since we do not need to do complex queries, there is no harm in using NoSQL database.
+-   Finally using React helps us to load our site fast as it only re-renders the components whose state changes.
+
+## Further tasks
+
+Ideally, URL Shorteners are huge systems and are a good question in System design interviews. So what all things can we do to improve our current system:
+
+-   Use Redis/ other caching database. Accessing the main database for each GET request is not efficient. So we can use some caching algorithm such as LRU or FIFO and based on that we can put data in Redis which is caching database. So before accessing the main database, the system queries the cache database. If the data is not found in the cache, then only the main database is queried.
+-   As it is possible that lot many people can access that site and make GET requests. So in such case, we may need to implement a load balancer too.
+-   Also, we can have the user create an account and display only those short URLs that he has created. This would enforce security.
