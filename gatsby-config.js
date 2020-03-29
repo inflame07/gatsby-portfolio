@@ -4,7 +4,12 @@ require(`dotenv`).config({
 
 module.exports = {
   siteMetadata: {
+    siteTitle: `Tapan Chudasama`,
     siteTitleAlt: `Home | Tapan Chudasama`,
+    siteDescription: `Portfolio site for Tapan Chudasama.`,
+    siteUrl: `https://tapanchudasama.netlify.com/`,
+    siteLanguage: `en`,
+    author: `@tapanchudasama`,
   },
   plugins: [
     {
@@ -29,6 +34,10 @@ module.exports = {
             name: `LinkedIn`,
             url: `https://www.linkedin.com/in/inflame`,
           },
+          {
+            name: 'Instagram',
+            url: 'https://www.instagram.com/tapanchudasama/'
+          }
         ],
       },
     },
