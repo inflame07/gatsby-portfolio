@@ -16,7 +16,7 @@ URL Shorteners are very useful if you want to remember a large URL of some websi
 
 1.  You enter your long lengthy URL in the input field on the website and hit submit.
 2.  As soon as you hit submit, the backend logic fires a POST request which makes an entry in the database of the URL. Also, at the same time, it generates a random id consisting of 6 digits. This can be done easily. This id is mapped with the long URL and stored in the database. 
-3. After this step, the generated id when entered in the search bar prefixed with the domain name of the site redirects to the original long URL. 
+3. After this step, when the generated id is entered in the search bar prefixed with the domain name of the site, it redirects to the original long URL.
 
 Following Code shows the backend logic which handles the requests coming from the frontend.
 
@@ -54,8 +54,8 @@ app.get("/api/:shortUrl", async (req, res) => {
 ```
 Say for example, 
  - A user goes to *`https://shrinkerr.herokuapp.com/`*, enters the URL that he wants to shrink i.e `www.reallylongurl.com/somedata/somedata`.
- - As soon as he submits the URL, a shortID is generated and mapped with the URL. Le the id be abc123.
- - Now if he searches `https://shrinkerr.herokuapp.com/abc123`, he is redirected to `www.reallylongurl.com/somedata/somedata`.
+ - As soon as the user submits the URL, a shortID is generated and mapped with the URL. Let the id be abc123. ()
+ - Now if he searches `https://shrinkerr.herokuapp.com/abc123`, he is redirected to `www.reallylongurl.com/somedata/somedata`. (Line 28)
 
 
 ## Use of MERN stack
