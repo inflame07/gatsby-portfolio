@@ -86,6 +86,13 @@ So each person in the document is a JavaScript Object. So the entire table1 if s
 }
 ```
 Each employee is a JSON object and each object has some fields associated with it.
+Now, if you want to query some data in the document, the query would go like:
+> db.collection.find({"position":"Tech Lead"})
+
+Here collection would be replaced by the name of the collections of documents.
+This query is equivalent to the SQL query above.
+
+
 Thing to note here is that as data is stores in JSON format, adding a value becomes easy. *For example,*
 If you want to add attribute *End Date* of internship for Mary Jane, so the table becomes:
 ```json {5}
