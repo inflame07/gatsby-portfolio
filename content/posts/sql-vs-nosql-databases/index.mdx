@@ -8,7 +8,7 @@ tags:
   - databases
 banner: ./banner.png
 ---
-Databases are used by almost all application that we create. If you want to store data at some point, then database is a must. But then the question arises which database to use, **SQL or NoSQL**? 
+Databases are used by almost all application that we create. If you want your application to store data at some point, then database is a must. But then the question arises which database to use, **SQL or NoSQL**? 
 ![Image](./image.png)
 
 ## What are SQL databases?
@@ -21,7 +21,9 @@ Consider this table1.
 | 001 | John Doe  | 37 |
 | 002 | Jason Fox | 29 |
 | 003 | Mary Jane | 21 |
-Here, *Name* and *Age* are attributes of each *Employee ID*.
+Here, *Employee_Name*,*Age* and Employee_ID are attributes of each Employee.
+
+
 Let's us consider a second example. Consider this table2.
 
 | Employee_ID | Position | Salary |
@@ -29,7 +31,7 @@ Let's us consider a second example. Consider this table2.
 | 001 | Tech Lead | 700000|
 | 002 | SDE 1     | 30000 |
 | 003 | Intern    | 4000  |
-Now, let's say you want to get all the names of people who are at the position of Tech Lead. Note that the second table does not have the names of the Employees. So you'll have to perform **JOIN** between two tables. Both the tables have one column common: *Employee ID*. So the query you need is-
+Now, let's say you want to get all the names of people who are at the position of Tech Lead. Note that the second table does not have the names of the Employees, but only *Position*. So you'll have to perform **JOIN** between two tables. Both the tables have one column common: *Employee ID*. So the query you need is-
 
 > SELECT t1.Employee_Name, t2.Position,
 >
@@ -47,13 +49,14 @@ There result of this query will be:
 |-------------|---------------|----------|
 | 001         |   John Doe    | Tech Lead|
 Thing to note here is that *Employee_ID* attribute ***links*** both the tables together and establishes a relation between them. So SQL databases re also called RDBMS (Relational Database Management Systems).
+
 ## What are NoSQL databases?
-**NoSQL** databases are different from SQL databases in way that they don't store data in a traditional row and column format. But in a key-val format or document-oriented format. 
+**NoSQL** databases are different from SQL databases in way that they don't store data in a traditional row and column format. But in a key-val format or document-oriented format or graph-based format. 
 *For example:*
 MongoDB, an example of NoSQL database, stores data in the form of documents in the database. 
 
-But before creating a database, MongoDB creates a cluster and within this cluster, it creates multiple databases. Within each database, you have multiple document and in each document, lies your data.
-> Cluster (has) -> Databases (have) -> Documents (have) ->  Data.
+But before creating a database, MongoDB creates a cluster and within this cluster, it creates multiple databases. Within each database, you have multiple documents (*collection*) and in each document, lies your data.
+> Cluster (has) -> Databases (have) -> Collection of Documents (have) ->  Data.
 
 Each document has some data that is stored in the form of JSON.
 An example of JSON would be
@@ -87,9 +90,9 @@ So each person in the document is a JavaScript Object. So the entire table1 if s
 ```
 Each employee is a JSON object and each object has some fields associated with it.
 Now, if you want to query some data in the document, the query would go like:
-> db.collection.find({"position":"Tech Lead"})
+> db.employeedata.find( { "position" : "Tech Lead" } )
 
-Here collection would be replaced by the name of the collections of documents.
+Here *employeedata* is the name of the collection where our data is stored.
 This query is equivalent to the SQL query above.
 
 
@@ -103,9 +106,10 @@ If you want to add attribute *End Date* of internship for Mary Jane, so the tabl
     "End Date":12-07-2020
 }
 ```
+Same goes for deletion. If you delete the *Salary* field from Mary Jane, the entire database does not get affected. But in case of SQL, if you want to delete *Salary* of a entity, you have to delete *Salary* for all the entities.
 ## Differences between SQL and NoSQL
 
-| # | SQL | NoSQL  |
+| No. | SQL | NoSQL  |
 |---|-----|--------|
 | **1**  | Fixed Schema (Row and Columns) | Flexible Schema (JSON) |
 | **2**  | Useful to make Complex Queries (JOINS)| Complex queries are not possible |
@@ -117,7 +121,7 @@ If you want to add attribute *End Date* of internship for Mary Jane, so the tabl
 
 - If you want to develop a application that will be storing sensitive
     data or any other application where you think that data should be
-    consistent throughout the database, you should go for **SQL** database.
-    That is why databases used by banking applications is always SQL.
+    consistent throughout the database (ACID properties), you should go for **SQL** database.
+    That is why databases used by banking applications, Air Ticket booking websites and other online booking sites always use SQL.
 - If you are developing a application where security is not a issue, or you
-    expect that user is not going to perform complex queries such as JOINS, or maybe just you want to have a flexible schema for database, go for **NoSQL** database. That is why database used by EA Sports, is NoSQL.
+    expect that user is not going to perform complex queries such as JOINS, or maybe just you want to have a flexible schema for database, go for **NoSQL** database. That is why database used by EA Sports for storing the user preferences and user data, is NoSQL.
