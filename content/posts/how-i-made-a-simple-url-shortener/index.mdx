@@ -6,7 +6,7 @@ tags:
   - Url Shortener
   - React.js
   - Node.js
-banner: ./URL-Shortener-banner.jpeg
+banner: ./banner.png
 ---
 URL Shorteners are very useful if you want to remember a large URL of some website. They trim down the huge URLs into really small URLs which mostly has 6 alphanumeric characters. Some sites also provide the functionality of custom URL where you can use your text prefixed with the domain name of site. But those are more complex ones and we’ll only discuss the basic one here.
 
@@ -54,7 +54,7 @@ app.get("/api/:shortUrl", async (req, res) => {
 ```
 Say for example, 
  - A user goes to *`https://shrinkerr.herokuapp.com/`*, enters the URL that he wants to shrink i.e `www.reallylongurl.com/somedata/somedata`.
- - As soon as the user submits the URL, a shortID is generated and mapped with the URL. Let the id be abc123. ()
+ - As soon as the user submits the URL, a shortID is generated and mapped with the URL. Let the id be abc123.
  - Now if he searches `https://shrinkerr.herokuapp.com/abc123`, he is redirected to `www.reallylongurl.com/somedata/somedata`. (Line 28)
 
 
