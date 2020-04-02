@@ -9,6 +9,7 @@ module.exports = {
     siteDescription: `Portfolio site for Tapan Chudasama.`,
     siteUrl: `https://tapanchudasama.netlify.com/`,
     siteLanguage: `en`,
+    siteImage: `/Profile2.jpg`,
     author: `@tapanchudasama`,
   },
   plugins: [
