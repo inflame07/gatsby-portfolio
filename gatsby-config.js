@@ -6,7 +6,7 @@ module.exports = {
   siteMetadata: {
     siteTitle: `Tapan Chudasama`,
     siteTitleAlt: `Home | Tapan Chudasama`,
-    siteDescription: `Portfolio site for Tapan Chudasama.`,
+    siteDescription: `Portfolio Site.`,
     siteUrl: `https://tapanchudasama.netlify.com/`,
     siteLanguage: `en`,
     siteImage: `/Profile2.jpg`,
