@@ -78,7 +78,7 @@ After socket has been opened, client initiates the TCP handshake.
 ![TCP Handshake](./tcp-handshake.png)
 
 ### TLS Handshake
-After the browser receives the I.P address of the website, it takes that and the default port number (80 incase if HTTP and 443 incase of HTTPS) and makes a call to the function named socket in system and requests a TCP socket stream.
+After TCP handshake, TLS handshake starts.
 
  1. The client system then sends a ```ClientHello``` message to the server with its TLS version, list of cipher algorithms and compression methods available.
  2. Server replies with the ```ServerHello``` message with the selected cipher algorithm, selected compression method and its own public certificate signed by the CA. This certificate has the public key that will be used to encrypt the messages until a symmetric key is decided.
