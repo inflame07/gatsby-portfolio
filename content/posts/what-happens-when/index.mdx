@@ -40,7 +40,7 @@ Example of HSTS header:
 
 ### DNS Lookup
 
-Now the browser tries to get the I.P address of the URL entered by the user. For this first it looks into the cache memory.
+Now the browser tries to get the I.P address of the URL entered by the user. For this first it looks into the cache memory of itself. The process goes on in following order:
 
  1. Browser Cache
  2. OS Cache
@@ -52,7 +52,7 @@ Now the browser tries to get the I.P address of the URL entered by the user. For
 After looking into all these, if I.P address is still not found, it starts the DNS recursive search which is the meat of the topic.
 
 
-Before proceesing further, it is important to understand the different parts of URL and what they represent.
+Before proceeding further, it is important to understand the different parts of URL and what they represent.
 ![URL](./url.png)
 
 
@@ -60,7 +60,7 @@ Before proceesing further, it is important to understand the different parts of 
 
 DNS Lookup is done in many steps.
 
- 1. **Root Name Server**: Root Name Server tells the resolver that the site you are looking for is of ```.com``` domain by looking at the extension of URL. and provides the resolver I.P address of the TDL Name Server that has all the ```.com``` domain sites.
+ 1. **Root Name Server**: Root Name Server tells the resolver that the site you are looking for is of ``.com`` domain by looking at the extension of URL and provides the resolver I.P address of the TLD Name Server that has all the ``.com`` domain sites.
  2. **TLD Name Server**: Now resolver goes to the Top Level Domain (TLD) name server using the I.P address provided by the Root Name Server. This name server then gives the I.P address of the Authoritative Name Server.
  3. **Authoritative Name Server**: The Authoritative Name Server finally gives the I.P address of "www.facebook.com" to the resolver.
 
@@ -72,7 +72,7 @@ After the browser receives the I.P address of the website, it takes that and the
 After socket has been opened, client initiates the TCP handshake.
 
  - Client chooses a sequence number for packet and sends the packet to server with SYN bit set to 1.
- - Server recieves the SYN and responds to client with the SYN-ACK bits set to 1. ACK to denote that it has recieved the packet and SYN to denote what sequence number it is likely to start the segments with.
+ - Server recieves the SYN and responds to client with the SYN-ACK bits set to 1. (ACK to denote that it has recieved the packet and SYN to denote what sequence number it is likely to start the segments with).
  - Client acknowledges the response of server and now data transfer can start.
 
 ![TCP Handshake](./tcp-handshake.png)
