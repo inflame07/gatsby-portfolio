@@ -6,21 +6,24 @@ tags:
   - Url Shortener
   - React.js
   - Node.js
+  - MongoDB
 banner: ./banner.png
 ---
-URL Shorteners are very useful if you want to remember a large URL of some website. They trim down the huge URLs into really small URLs which mostly has 6 alphanumeric characters. Some sites also provide the functionality of custom URL where you can use your text prefixed with the domain name of site. But those are more complex ones and we’ll only discuss the basic one here.
+
+URL Shorteners are very useful if you want to remember a large URL of some website. They trim down the huge URLs into really small URLs which are easier to remember and share. Here will be creating one using React and Node.
+
 
 ![URL Shortener](./URL-Shortener-banner.jpeg)
 
-## How URL shorteners work?
+## How does it work?
 
-1.  You enter your long lengthy URL in the input field on the website and hit submit.
-2.  As soon as you hit submit, the backend logic fires a POST request which makes an entry in the database of the URL. Also, at the same time, it generates a random id consisting of 6 digits. This can be done easily. This id is mapped with the long URL and stored in the database. 
-3. After this step, when the generated id is entered in the search bar prefixed with the domain name of the site, it redirects to the original long URL.
+1.  You enter your long lengthy URL in the input field and the slug that you want to have in your trimmed URL on the website and hit submit.
+2.  As soon as you hit submit, the backend logic fires a POST request which makes an entry in the database of the URL. Also, at the same time, if you have not entered a custom slug for your URL, it generates a random id consisting of 6 digits. This id is mapped with the long URL and stored in the database. Otherwise a database query first checks that the slug you entered is not persent in the database. (Necessary because the slug needs to be unique) If it is present, you notifies you to enter a new slug.
+3. After this step, the URL along with the slug or the random ID is stored in the database.
 
 Following Code shows the backend logic which handles the requests coming from the frontend.
 
-```jsx:title=server.js {3,15,23,24,28}
+```jsx:title=server.js {3,15,19,23,24,28}
 // This route finds all the shorturls that have been created till now and displays them in a tabular form
 app.get("/api", (req, res) => {
 	ShortURLs.find(function(err,urls){
@@ -33,14 +36,23 @@ app.get("/api", (req, res) => {
 		}
 	});
 });
-// POST request makes an entry in the database and generates a 6 digit id
-app.post("/api/shortURLs", function(req, res) {
-	ShortURLs.create({ full: req.body.fullURL })
-		.then(() => console.log("Short URL created!"))
-		.catch(err => console.log(err));
-	res.redirect("/");
+app.post("/api/shortURLs", function (req, res) {
+  let slug = req.body.slug;
+  if (slug === '') { // If slug is not entered, generate random ID
+	  console.log(slug);
+    slug = shortID.generate();
+  }
+  ShortURLs.find({ short: req.body.slug }, (err, docs) => {
+    if (docs.length > 0) {
+      res.sendStatus(500);// If slug is already present, notify user to enter new slug
+    } else {
+      ShortURLs.create({ full: req.body.fullURL, short: slug })
+        .then(() => console.log("Short URL created!"))
+        .catch((err) => console.log(err));
+      res.redirect("/");
+    }
+  });
 });
-
 // This route finds a specific url associated with a particular id (:shortUrl)
 // and the redirects to the long url associated with it
 app.get("/api/:shortUrl", async (req, res) => {
@@ -52,11 +64,6 @@ app.get("/api/:shortUrl", async (req, res) => {
 });
 
 ```
-Say for example, 
- - A user goes to *`https://shrinkerr.herokuapp.com/`*, enters the URL that he wants to shrink i.e `www.reallylongurl.com/somedata/somedata`.
- - As soon as the user submits the URL, a shortID is generated and mapped with the URL. Let the id be abc123.
- - Now if he searches `https://shrinkerr.herokuapp.com/abc123`, he is redirected to `www.reallylongurl.com/somedata/somedata`. (Line 28)
-
 
 ## Use of MERN stack
 -   Node.js along with its Express framework helps in creating routes quickly without worrying. Also, Node.js provides a lot of packages which help to create the application fast by focusing on the meat of the application and leave the unimportant things.
@@ -67,6 +74,6 @@ Say for example,
 
 Ideally, URL Shorteners are huge systems and are a good question in System design interviews. So what all things can we do to improve our current system:
 
--   Use Redis/ other caching database. Accessing the main database for each GET request is not efficient. So we can use some caching algorithm such as LRU or FIFO and based on that we can put data in Redis which is caching database. So before accessing the main database, the system queries the cache database. If the data is not found in the cache, then only the main database is queried.
--   As it is possible that lot many people can access that site and make GET requests. So in such case, we may need to implement a load balancer too.
+-   Use Redis/ other caching database. Accessing the main database for each **GET** request is not efficient. So we can use some caching algorithm such as LRU or FIFO and based on that we can put data in Redis which is caching database. So before accessing the main database, the system queries the cache database. If the data is not found in the cache, then only the main database is queried.
+-   As it is possible that lot many people can access that site and make **GET** requests. So in such case, we may need to implement a load balancer too.
 -   Also, we can have the user create an account and display only those short URLs that he has created. This would enforce security.
